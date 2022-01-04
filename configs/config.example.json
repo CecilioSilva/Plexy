@@ -1,0 +1,71 @@
+{
+  "general_config": {
+    "prefix": ["p!"],
+    "nsfw": true,
+    "safe-mode": true,
+    "log-level": "DEBUG",
+    "log-format": "%(asctime)s [%(levelname)-5.5s] %(message)s",
+    "backup-hour-interval": 12
+  },
+  "plex_config": {
+    "refreshTime": 15,
+    "max-recently-added": 20,
+    "scanLibraries": ["TV Shows", "Movies", "Anime"],
+    "allLibraries": ["Anime", "Movies", "Home Videos", "TV Shows"]
+  },
+  "style_config": {
+    "iconLink": "https://i.imgur.com/sxfp0vX.png",
+    "defaultThumbLink": "https://i.imgur.com/sjaGBhh.jpg",
+    "loadingImgLink": "https://i.imgur.com/k52y1hX.gif",
+    "requestImgLink": "https://i.imgur.com/En1iCo9.gif",
+    "infoThumbLink": "https://i.imgur.com/6yQjpVm.png",
+    "defaultEmbedColor": "#ff6500",
+    "helpEmbedColor": "#ff8800",
+    "newContentEmbedColor": "#ff5200"
+  },
+  "command_config": {
+    "aliases": {
+      "ping": ["ping", "lat", "pong"],
+      "info": ["info", "i", "inf", "plex"],
+      "summary": ["summary", "sum", "sm"],
+      "search": ["search", "s", "get", "sr"],
+      "random": ["random", "ran", "r", "rnd"],
+      "request": ["request", "req", "ls"],
+      "report": ["report", "rep", "prob", "problem"],
+      "dashboard": ["dashboard", "dash"],
+      "libraries": ["libraries", "lib", "libs"]
+    },
+    "is_enabled": {
+      "help": true,
+      "ping": true,
+      "info": true,
+      "summary": true,
+      "search": true,
+      "random": true,
+      "request": true,
+      "report": true,
+      "adult": false,
+      "dashboard": true,
+      "libraries": true
+    },
+    "args": {
+      "-all": ["Anime", "Movies", "TV Shows"],
+      "-home": ["Home Videos"],
+      "-movie": ["Movies"],
+      "-m": ["Movies"],
+      "-show": ["TV Shows"],
+      "-s": ["TV Shows"],
+      "-anime": ["Anime"],
+      "-a": ["Anime"],
+      "-p": ["Definitely Homework 3D"],
+      "-videos": ["Videos"],
+      "-v": ["Videos"]
+    },
+    "settings": {
+      "max-embed-amount": 10,
+      "max-random-amount": 1,
+      "max-search-amount": 5,
+      "max-summary-amount": 5
+    }
+  }
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "field": "help",
+    "content": {
+      "help": "sends help message",
+      "help -c": "sends help message in channel",
+      "help command": "sends help message about a command"
+    },
+    "aliases": ["help"],
+    "description": "Command to display the help message\nAdd an other command after it and it will return a specific help message "
+  },
+  {
+    "field": "ping",
+    "content": {
+      "ping": "pings the bot"
+    },
+    "aliases": ["ping", "lat", "pong"],
+    "description": "Command pings the bot\nReturns the latency of the bot in ms"
+  },
+  {
+    "field": "info",
+    "content": {
+      "info": "get info about the plex server (Don't call it to often)",
+      "info -a": "get all info about the plex server (Don't call it to often)"
+    },
+    "aliases": ["info", "i", "inf", "plex"],
+    "description": "Returns an info message about the server.\nWith server status, content count and more"
+  },
+  {
+    "field": "libraries",
+    "content": {
+      "libraries": "get plex server libraries",
+      "libraries -a": "get all plex server libraries"
+    },
+    "aliases": ["libraries", "lib", "libs"],
+    "description": "Returns a message about the libraries in the plex server."
+  },
+  {
+    "field": "summary",
+    "content": {
+      "summary": "get a summary from recently added content"
+    },
+    "aliases": ["summary", "sum", "sm"],
+    "description": "Returns an summary of latest added content per library"
+  },
+  {
+    "field": "search",
+    "content": {
+      "search": "search the whole server for safe content",
+      "search -m/movie": "search the whole server for movies",
+      "search -s/show": "search the whole server for tv shows",
+      "Tip": "if search is more than one word wrap in`\" \"`"
+    },
+    "aliases": ["search", "s", "get", "sr"],
+    "description": "Searches the plex server for content with the give parameter\nTo search for more than one word wrap it in `\" \"`\nYou can add a filter with the flags "
+  },
+  {
+    "field": "random",
+    "content": {
+      "random": "to get a random entry in plex",
+      "random -m/movie": "get a random Movie",
+      "random -s/show": "get a random Tv Show"
+    },
+    "aliases": ["random", "ran", "r", "rnd"],
+    "description": "Get a random piece of content from the plex server\nTo get a certain kind of content use the flags"
+  },
+  {
+    "field": "request",
+    "content": {
+      "request": "request new content"
+    },
+    "aliases": ["request", "req", "ls"],
+    "description": "Request the plex server admin for new content\nSends private message to te server admin"
+  },
+  {
+    "field": "report",
+    "content": {
+      "report": "Report a problem with the server or bot"
+    },
+    "aliases": ["report", "rep", "problem", "prob"],
+    "description": "Report a problem with the plex server or bot\nSends private message to te server admin"
+  },
+  {
+    "field": "support",
+    "content": {
+      "support": "Support the developer command"
+    },
+    "aliases": ["support", "sup", "hero", "dev"],
+    "description": "Sends an embed with developer support link"
+  }
+]
