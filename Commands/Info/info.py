@@ -24,7 +24,7 @@ class SupportEmbed(discord.Embed):
         super().__init__()
         self.title = "Support the developer"
         self.set_thumbnail(url="https://i.imgur.com/sxfp0vX.png")
-        self.description = "[Buy me a Coffee](https://ko-fi.com/gamingismyfood)\n[Github Repo](https://github.com/CecilioSilva/PlexyRewite)"
+        self.description = "[Buy me a Coffee](https://ko-fi.com/gamingismyfood)\n[Github Repo](https://github.com/CecilioSilva/Plexy)"
         self.color = 0xf207ff
         self.set_author(
             name="Made by: Gamingismyfood",
@@ -44,7 +44,8 @@ class NotiEmbed(discord.Embed):
         self.color = settings.style_config.defaultEmbedColor if not color else color
 
         if author:
-            self.set_author(name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/PlexyRewite")
+            self.set_author(name="Plexy", icon_url=settings.style_config.iconLink,
+                            url="https://github.com/CecilioSilva/Plexy")
         if thumbnail:
             self.set_thumbnail(url=thumbnail)
 
@@ -61,18 +62,22 @@ class InfoEmbed(discord.Embed):
         self.color = settings.style_config.helpEmbedColor
         self.all_libs = all_libs
 
-        self.set_author(name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/PlexyRewite")
+        self.set_author(name="Plexy", icon_url=settings.style_config.iconLink,
+                        url="https://github.com/CecilioSilva/Plexy")
         self.plex_con = plex_con
 
         if self.plex_con:
-            self.add_field(name="Server:", value=f"{self.plex_con.title}:  🟢", inline=False)
+            self.add_field(
+                name="Server:", value=f"{self.plex_con.title}:  🟢", inline=False)
             self.set_all_fields()
         else:
             self.add_field(name="Server:", value=f"Offline:  🔴", inline=False)
 
-        self.set_footer(text=f'Version: 6.0', icon_url=settings.style_config.iconLink)
+        self.set_footer(text=f'Version: 6.0',
+                        icon_url=settings.style_config.iconLink)
         self.set_thumbnail(url=settings.style_config.infoThumbLink)
-        self.add_field(name="Uptime:", value=datetime.datetime.now() - starting_time)
+        self.add_field(
+            name="Uptime:", value=datetime.datetime.now() - starting_time)
 
         main_logger.debug(f"{self} {self.description}")
 
@@ -104,8 +109,6 @@ class InfoEmbed(discord.Embed):
                 libraries_value += f"{key}: **{value}**\n"
         self.add_field(name="Libraries:", value=libraries_value, inline=False)
 
-
-
     def __repr__(self):
         return f'<Info Embed: uptime: {datetime.datetime.now() - starting_time}>'
 
@@ -118,7 +121,7 @@ class HelpEmbed(discord.Embed):
         self.color = settings.style_config.helpEmbedColor
 
         self.set_author(
-            name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/PlexyRewite")
+            name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/Plexy")
 
         self.set_footer(
             text=f"Made by: Gamingismyfood", icon_url=settings.style_config.iconLink)
@@ -142,20 +145,24 @@ class HelpEmbed(discord.Embed):
 
                 # If command is hidden don't show it in help except if the all help is asked
                 if not arg:
-                    self.add_field(name=i['field'].capitalize(), value=string, inline=False)
+                    self.add_field(
+                        name=i['field'].capitalize(), value=string, inline=False)
                 else:
 
                     # if help for certain command is asked
                     if getattr(settings.command_config.aliases, arg.lower(), False):
                         if i['field'] == arg.lower():
-                            self.add_field(name=i['field'].capitalize(), value=string, inline=False)
-                            self.add_field(name="Description", value=i['description'], inline=False)
+                            self.add_field(
+                                name=i['field'].capitalize(), value=string, inline=False)
+                            self.add_field(name="Description",
+                                           value=i['description'], inline=False)
                             break
                     else:
                         self.add_field(
                             name=i['field'].capitalize(), value=string, inline=False)
         else:
-            self.add_field(name='Error', value="No Help file found", inline=False)
+            self.add_field(
+                name='Error', value="No Help file found", inline=False)
 
     def __repr__(self):
         return f"<Help Embed {settings.general_config.prefix}>"
@@ -166,12 +173,14 @@ def summary_embed(plex_con):
     new_content: list[Content] = plex_con.get_new_content()
 
     # Sorts all rows by title
-    categories = [list(g) for k, g in groupby(new_content, key=lambda x: x.type)]
+    categories = [list(g)
+                  for k, g in groupby(new_content, key=lambda x: x.type)]
     embeds = list()
     for content in categories:
         content.reverse()
         # Top newest additions
-        titles = [(cont.title, cont.library) for cont in content[:settings.command_config.settings.max_summary_amount]]
+        titles = [(cont.title, cont.library)
+                  for cont in content[:settings.command_config.settings.max_summary_amount]]
 
         title = f"Recently Added {content[0].library}:"
         description = '\n'.join(
@@ -212,7 +221,8 @@ class info(commands.Cog):
         main_logger.command('help', ctx)
         if not arg:
             await ctx.author.send(embed=HelpEmbed())
-            embed = NotiEmbed(title=f"Send help message to:", description=f"{ctx.author.name}#{ctx.author.discriminator}")
+            embed = NotiEmbed(title=f"Send help message to:",
+                              description=f"{ctx.author.name}#{ctx.author.discriminator}")
             main_logger.info(f'Send private: {repr(embed)}')
             ctx.send(embed=embed, delete_after=10)
             return
@@ -256,10 +266,12 @@ class info(commands.Cog):
 
             libraries = plex_con.library.sections()
             if arg == "-a":
-                desc = "\n".join([f"• **{lib.title}** - `{lib.totalSize}`" for lib in libraries])
+                desc = "\n".join(
+                    [f"• **{lib.title}** - `{lib.totalSize}`" for lib in libraries])
             else:
                 scan_libs = settings.plex_config.scanLibraries
-                desc = "\n".join([f"• **{lib.title}** - `{lib.totalSize}`" for lib in libraries if lib.title in scan_libs])
+                desc = "\n".join(
+                    [f"• **{lib.title}** - `{lib.totalSize}`" for lib in libraries if lib.title in scan_libs])
 
             embed = NotiEmbed(title=f"Libraries:", description=desc)
             await ctx.send(embed=embed)
