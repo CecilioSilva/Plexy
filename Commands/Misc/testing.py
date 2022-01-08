@@ -10,6 +10,7 @@ class testing(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.ping, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.ping)
     @commands.guild_only()
     async def _ping(self, ctx):

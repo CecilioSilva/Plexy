@@ -33,7 +33,6 @@ class PlexConfig:
 class GeneralConfig:
     def __init__(self, json: dict):
         self.prefix: List[str] = json.get('prefix')
-        self.nsfw: bool = json.get('nsfw')
         self.safe_mode: bool = json.get('safe-mode')
         self.log_level: str = json.get('log-level')
         self.log_format: str = json.get('log-format')
@@ -52,6 +51,8 @@ class CommandConfig:
             self.report: List[str] = json.get('report')
             self.dashboard: List[str] = json.get('dashboard')
             self.libraries: List[str] = json.get('libraries')
+            self.flags: List[str] = json.get('flags')
+
 
     class __IsEnabled:
         def __init__(self, json: dict):
@@ -63,9 +64,10 @@ class CommandConfig:
             self.random: bool = json.get('random')
             self.request: bool = json.get('request')
             self.report: bool = json.get('report')
-            self.adult: bool = json.get('adult')
             self.dashboard: bool = json.get('dashboard')
             self.libraries: bool = json.get('libraries')
+            self.flags: bool = json.get('flags')
+
 
     class __CommandSettings:
         def __init__(self, json: dict):
@@ -74,10 +76,27 @@ class CommandConfig:
             self.max_summary_amount: int = json.get('max-summary-amount')
             self.max_embed_amount: int = json.get('max-embed-amount')
 
+
+    class __Cooldowns:
+        def __init__(self, json: dict) -> None:
+            self.help: int = json.get('help')
+            self.ping: int = json.get('ping')
+            self.info: int = json.get('info')
+            self.summary: int = json.get('summary')
+            self.search: int = json.get('search')
+            self.random: int = json.get('random')
+            self.request: int = json.get('request')
+            self.report: int = json.get('report')
+            self.dashboard: int = json.get('dashboard')
+            self.libraries: int = json.get('libraries')
+            self.flags: int = json.get('flags')
+
+
     def __init__(self, json: dict):
         self.aliases = self.__Aliases(json.get('aliases'))
         self.is_visible = self.__IsEnabled(json.get('is_enabled'))
         self.settings = self.__CommandSettings(json.get('settings'))
+        self.cooldowns = self.__Cooldowns(json.get('cooldowns'))
         self.args: dict[str, List[str]] = json.get('args')
 
 
@@ -97,7 +116,6 @@ class Settings:
         self.secrets_path = 'configs/secrets.json'
         self.help_path = 'configs/help_config.json'
         self.database_path = 'data/content_database.sqlite'
-
 
         self.__config: Config = Config(self.config_path)
         self.__secrets: Config = Config(self.secrets_path)

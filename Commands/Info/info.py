@@ -44,8 +44,7 @@ class NotiEmbed(discord.Embed):
         self.color = settings.style_config.defaultEmbedColor if not color else color
 
         if author:
-            self.set_author(name="Plexy", icon_url=settings.style_config.iconLink,
-                            url="https://github.com/CecilioSilva/Plexy")
+            self.set_author(name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/Plexy")
         if thumbnail:
             self.set_thumbnail(url=thumbnail)
 
@@ -62,8 +61,7 @@ class InfoEmbed(discord.Embed):
         self.color = settings.style_config.helpEmbedColor
         self.all_libs = all_libs
 
-        self.set_author(name="Plexy", icon_url=settings.style_config.iconLink,
-                        url="https://github.com/CecilioSilva/Plexy")
+        self.set_author(name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/Plexy")
         self.plex_con = plex_con
 
         if self.plex_con:
@@ -90,7 +88,7 @@ class InfoEmbed(discord.Embed):
         general_value = ""
         all_count = 0
 
-        # Gets the content amount of different content types
+
         result = Counter(types)
         for key, value in result.items():
             all_count += value
@@ -98,9 +96,10 @@ class InfoEmbed(discord.Embed):
         general_value += f"Total: **{all_count}**\n"
         self.add_field(name="General:", value=general_value, inline=False)
 
-        # Gets the amount of content per library
+
         libraries_value = ""
         result = Counter(library_stats)
+
 
         libraries_to_scan = settings.plex_config.allLibraries if self.all_libs else settings.plex_config.scanLibraries
 
@@ -126,30 +125,30 @@ class HelpEmbed(discord.Embed):
         self.set_footer(
             text=f"Made by: Gamingismyfood", icon_url=settings.style_config.iconLink)
 
-        # Specific help message
+
         if arg:
             self.title = discord.Embed.Empty
             self.description = discord.Embed.Empty
 
         if exists('configs/help_config.json'):
-            # Reads help file
+
             with open('configs/help_config.json', 'r') as help_file:
                 data = help_file.read()
             for i in json.loads(data):
                 string = ''
                 for j in i['content']:
-                    # Added command with quotes and description to field
+
                     string += f"`{j}`: {i['content'][j]}\n"
-                # Adds commands aliases to field
+
                 string += f'*aliases*: ***{" | ".join([f"`{alias}`" for alias in i["aliases"]])}***\n'
 
-                # If command is hidden don't show it in help except if the all help is asked
+
                 if not arg:
                     self.add_field(
                         name=i['field'].capitalize(), value=string, inline=False)
                 else:
 
-                    # if help for certain command is asked
+
                     if getattr(settings.command_config.aliases, arg.lower(), False):
                         if i['field'] == arg.lower():
                             self.add_field(
@@ -168,17 +167,34 @@ class HelpEmbed(discord.Embed):
         return f"<Help Embed {settings.general_config.prefix}>"
 
 
+class FlagsEmbed(discord.Embed):
+    def __init__(self):
+        super().__init__()
+        self.title = "Flags"
+        self.description = "All usable args for commands. You can select libraries with these flags\n"
+        self.color = settings.style_config.helpEmbedColor
+        self.set_footer(text=f"Made by: Gamingismyfood", icon_url=settings.style_config.iconLink)
+        self.set_author(name="Plexy", icon_url=settings.style_config.iconLink, url="https://github.com/CecilioSilva/Plexy")
+
+        args = ""
+        for key, value in settings.command_config.args.items():
+            args += f"**{key}** : `{' | '.join(value)}`\n"
+
+        self.add_field(name="Flags:", value=args, inline=False)
+
+    def __repr__(self):
+        return f"<Flag Embed>"
+
+
 def summary_embed(plex_con):
-    """Summary embed method"""
     new_content: list[Content] = plex_con.get_new_content()
 
-    # Sorts all rows by title
     categories = [list(g)
                   for k, g in groupby(new_content, key=lambda x: x.type)]
     embeds = list()
     for content in categories:
         content.reverse()
-        # Top newest additions
+
         titles = [(cont.title, cont.library)
                   for cont in content[:settings.command_config.settings.max_summary_amount]]
 
@@ -199,7 +215,7 @@ class info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.cooldown(rate=1, per=30, type=commands.BucketType.member)
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.info, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.info)
     async def _info_command(self, ctx, arg1=None):
         main_logger.command('info', ctx)
@@ -216,6 +232,7 @@ class info(commands.Cog):
             await ctx.send(embed=info_embed)
             main_logger.info(f'Send: {repr(info_embed)}')
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.help, type=commands.BucketType.member)
     @commands.command(name="help")
     async def _help(self, ctx, arg=None):
         main_logger.command('help', ctx)
@@ -224,7 +241,7 @@ class info(commands.Cog):
             embed = NotiEmbed(title=f"Send help message to:",
                               description=f"{ctx.author.name}#{ctx.author.discriminator}")
             main_logger.info(f'Send private: {repr(embed)}')
-            ctx.send(embed=embed, delete_after=10)
+            await ctx.send(embed=embed, delete_after=10)
             return
         elif arg == "-c":
             embed = HelpEmbed()
@@ -234,6 +251,7 @@ class info(commands.Cog):
         await ctx.send(embed=embed)
         main_logger.info(f'Send: {repr(embed)}')
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.summary, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.summary)
     async def _summary(self, ctx):
         main_logger.command('summary', ctx)
@@ -252,7 +270,7 @@ class info(commands.Cog):
                 await ctx.send(embed=embed)
                 main_logger.info(f'Send: {repr(embed)}')
 
-    @commands.cooldown(rate=1, per=30, type=commands.BucketType.member)
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.libraries, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.libraries)
     async def _libraries(self, ctx, arg=None):
         main_logger.command('libraries', ctx)
@@ -283,6 +301,15 @@ class info(commands.Cog):
         embed = SupportEmbed()
         await ctx.send(embed=embed)
         main_logger.info(f'Send: {repr(embed)}')
+
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.flags, type=commands.BucketType.member)
+    @commands.command(aliases=settings.command_config.aliases.flags)
+    async def _flags(self, ctx):
+        if settings.command_config.is_visible.flags:
+            main_logger.command('flags', ctx)
+            embed = FlagsEmbed()
+            await ctx.send(embed=embed)
+            main_logger.info(f'Send: {repr(embed)}')    
 
 
 def setup(bot):

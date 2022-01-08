@@ -47,19 +47,17 @@
     "field": "search",
     "content": {
       "search": "search the whole server for safe content",
-      "search -m/movie": "search the whole server for movies",
-      "search -s/show": "search the whole server for tv shows",
+      "search -flag": "search a certain group of libraries",
       "Tip": "if search is more than one word wrap in`\" \"`"
     },
     "aliases": ["search", "s", "get", "sr"],
-    "description": "Searches the plex server for content with the give parameter\nTo search for more than one word wrap it in `\" \"`\nYou can add a filter with the flags "
+    "description": "Searches the plex server for content with the give parameter\nTo search for more than one word wrap it in `\" \"`\nYou can add a filter with the flags"
   },
   {
     "field": "random",
     "content": {
       "random": "to get a random entry in plex",
-      "random -m/movie": "get a random Movie",
-      "random -s/show": "get a random Tv Show"
+      "random -flag": "to get a random entry from a library in plex"
     },
     "aliases": ["random", "ran", "r", "rnd"],
     "description": "Get a random piece of content from the plex server\nTo get a certain kind of content use the flags"
@@ -87,5 +85,13 @@
     },
     "aliases": ["support", "sup", "hero", "dev"],
     "description": "Sends an embed with developer support link"
+  },
+  {
+    "field": "flags",
+    "content": {
+      "flags": "See all available flags"
+    },
+    "aliases": ["flags", "fl", "flg", "args"],
+    "description": "Sends an embed all available flags"
   }
 ]

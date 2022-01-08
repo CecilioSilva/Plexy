@@ -20,8 +20,6 @@ class utils(commands.Cog):
 
     @staticmethod
     def get_libraries_from_args(arg1: str, arg2: str = None, arg3: int = 1) -> tuple[list, int, str]:
-        """Gets the libraries, amount, query from the command"""
-
         libraries_to_search = settings.command_config.args.get(arg1)
 
         query = arg2
@@ -35,13 +33,14 @@ class utils(commands.Cog):
             amount = 1
 
         main_logger.debug(f"Libraries: {libraries_to_search}, Amount: {amount}, Query: {query}")
-        return libraries_to_search, amount, query
+
+        if query is not None:
+            return libraries_to_search, amount, query
+        else:
+            return [], 0, ''
 
     @staticmethod
     def random_embed(plex_con: PlexConnection, library: str, amount: int, _) -> list[ContentEmbed]:
-        """Return list of random content from random library"""
-
-        # clamps value to from 1 to max value
         amount = max(1, min(amount, settings.command_config.settings.max_random_amount))
 
         random_content_embeds = list()
@@ -55,7 +54,6 @@ class utils(commands.Cog):
 
     @staticmethod
     def search_library(plex_con: PlexConnection, params: tuple[list, int, str]):
-        """Gets content by query from passed library"""
         found = list()
         libraries = params[0]
         amount = params[1]
@@ -64,7 +62,6 @@ class utils(commands.Cog):
             try:
                 results = plex_con.library.section(library).search(query)
                 for result in results:
-                    # if episode names need to be searched too
                     found.append(Content(plex_con, result))
             except Exception as e:
                 main_logger.error(f"Exception in searching for content: {e}")
@@ -77,6 +74,7 @@ class utils(commands.Cog):
         await ctx.send(f"An error has occurred 😖: {error}", delete_after=5)
         await ctx.message.delete(delay=5)
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.search, type=commands.BucketType.member)
     @commands.command(aliases=Settings().command_config.aliases.search)
     @commands.has_permissions()
     async def _search(self, ctx, arg1=None, arg2=None, arg3=None):
@@ -107,6 +105,7 @@ class utils(commands.Cog):
             else:
                 await ctx.send(f"** Nothing Found For: `{' '.join([str(arg1),str(arg2),str(arg3)])}`**")
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.random, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.random)
     async def _random(self, ctx, arg1=None, arg2=None, arg3=None):
         main_logger.command('random', ctx)
@@ -128,6 +127,7 @@ class utils(commands.Cog):
                     await ctx.send(embed=embed)
                 main_logger.info(f'Send: {repr(embed)}')
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.request, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.request)
     async def _request(self, ctx, *, request=None):
         main_logger.command('request', ctx)
@@ -146,6 +146,7 @@ class utils(commands.Cog):
                 await ctx.message.delete(delay=5)
                 main_logger.info(f'Send: {repr(embed)}')
 
+    @commands.cooldown(rate=1, per=settings.command_config.cooldowns.report, type=commands.BucketType.member)
     @commands.command(aliases=settings.command_config.aliases.report)
     async def _report(self, ctx, *, report):
         main_logger.command('report', ctx)

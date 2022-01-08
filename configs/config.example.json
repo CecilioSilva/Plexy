@@ -1,7 +1,6 @@
 {
   "general_config": {
     "prefix": ["p!"],
-    "nsfw": true,
     "safe-mode": true,
     "log-level": "DEBUG",
     "log-format": "%(asctime)s [%(levelname)-5.5s] %(message)s",
@@ -11,7 +10,7 @@
     "refreshTime": 15,
     "max-recently-added": 20,
     "scanLibraries": ["TV Shows", "Movies", "Anime"],
-    "allLibraries": ["Anime", "Movies", "Home Videos", "TV Shows"]
+    "allLibraries": ["Anime", "Movies", "Home videos", "TV Shows"]
   },
   "style_config": {
     "iconLink": "https://i.imgur.com/sxfp0vX.png",
@@ -33,7 +32,8 @@
       "request": ["request", "req", "ls"],
       "report": ["report", "rep", "prob", "problem"],
       "dashboard": ["dashboard", "dash"],
-      "libraries": ["libraries", "lib", "libs"]
+      "libraries": ["libraries", "lib", "libs"],
+      "flags": ["flags", "fl", "flg", "args", "f"]
     },
     "is_enabled": {
       "help": true,
@@ -44,20 +44,19 @@
       "random": true,
       "request": true,
       "report": true,
-      "adult": false,
       "dashboard": true,
-      "libraries": true
+      "libraries": true,
+      "flags": true
     },
     "args": {
       "-all": ["Anime", "Movies", "TV Shows"],
-      "-home": ["Home Videos"],
       "-movie": ["Movies"],
       "-m": ["Movies"],
       "-show": ["TV Shows"],
       "-s": ["TV Shows"],
       "-anime": ["Anime"],
       "-a": ["Anime"],
-      "-p": ["Definitely Homework 3D"],
+      "-h": ["Home videos"],
       "-videos": ["Videos"],
       "-v": ["Videos"]
     },
@@ -66,6 +65,19 @@
       "max-random-amount": 1,
       "max-search-amount": 5,
       "max-summary-amount": 5
+    },
+    "cooldowns": {
+      "help": 0,
+      "ping": 0,
+      "info": 30,
+      "summary": 30,
+      "search": 15,
+      "random": 15,
+      "request": 0,
+      "report": 0,
+      "dashboard": 0,
+      "libraries": 0,
+      "flags": 0
     }
   }
 }

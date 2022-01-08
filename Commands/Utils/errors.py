@@ -5,15 +5,12 @@ import traceback
 
 
 class ErrorHandler(commands.Cog):
-    """A cog for global error handling."""
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
-        """A global error handler cog."""
-
         if isinstance(error, commands.CommandOnCooldown):
             message = f"This command is on cool-down. Please try again after {round(error.retry_after, 1)} seconds."
         elif isinstance(error, commands.MissingPermissions):

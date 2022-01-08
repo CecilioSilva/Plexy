@@ -6,3 +6,5 @@ __pycache__
 data/
 config.json
 secrets.json
+build/
+TODO

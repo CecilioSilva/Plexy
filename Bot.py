@@ -8,7 +8,6 @@ import discord
 
 
 
-
 main_logger.info("Bot Starting")
 
 
