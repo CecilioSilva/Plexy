@@ -18,11 +18,13 @@
 </div>
 
 ---
+
 <div align="center">
     <img src="https://i.imgur.com/Abn4f91.png" align="center" style="weight: 500px"/>
 </div>
 
 ---
+
 # Features ✨
 
 Plexy is a one of a kind discord bot
@@ -31,9 +33,11 @@ Plexy is a one of a kind discord bot
 - Easy to configure ⚙️
 - Customizable 📐
 - Two different modes
+
 ---
 
 ## How to use Plexy 🤖
+
 ### Requirements 📜
 
 - [Python](https://www.python.org/downloads/) 3.6 or Higher (I used 3.9)
@@ -72,8 +76,8 @@ press `add bot` and `yes, do it!`
 }
 ```
 
-- `bot_token` &#8594; The discord bot token you can find in the [Discord developer portal](https://discord.com/developers/applications/)  
-- `notificationChannelid` &#8594; Go to discord client `Settings` > `Advanced` > `Developer Mode` and enable it. Then go to the channel you want the new content notifications and right click it and `Copy ID`  
+- `bot_token` &#8594; The discord bot token you can find in the [Discord developer portal](https://discord.com/developers/applications/)
+- `notificationChannelid` &#8594; Go to discord client `Settings` > `Advanced` > `Developer Mode` and enable it. Then go to the channel you want the new content notifications and right click it and `Copy ID`
 - `plexAdminDiscordId` &#8594; Do the same as `notificationChannelid` but select the discord user you that controls the plex server
 - `plexBaseUrl` &#8594; Go to [Plex](https://www.plex.tv/) and open the dashboard. goto `Settings` > `Remote Access` if plex server is on the same system as the bot use `http://localhost:32400/`, otherwise use the public ip and port
 - `plexToken` &#8594; See [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
@@ -92,6 +96,7 @@ press `add bot` and `yes, do it!`
     "allLibraries": ["Anime", "Movies", "Home videos", "TV Shows"]
   }
 ```
+
 - `scanLibraries` &#8594; Are all the libraries Plexy searches for new content
 - `allLibraries` &#8594; All the libraries you want plexy to see
 
@@ -109,15 +114,14 @@ press `add bot` and `yes, do it!`
   "-v": ["Videos"]
 }
 ```
+
 These are all the flags users can use to filter for libraries
 you can add and remove any flag you want
 
-
 #### 8. Choose if you want safe mode or not
 
-
-| :exclamation:  This is very important   |
-|-----------------------------------------|
+| :exclamation: This is very important |
+| ------------------------------------ |
 
 ```json
   "general_config" : {
@@ -125,11 +129,8 @@ you can add and remove any flag you want
   }
 ```
 
-**🛑 Plexy uses the plex token to get media assets from the plex server. 
+**🛑 Plexy uses the plex token to get media assets from the plex server.
 But that exposes the plex token you have set to everybody in the discord server/channel. 🛑**
-         
-
-
 
 #### 9. Rename the file to `config.json`
 
@@ -141,22 +142,35 @@ To run the project
 
 0. (Optional) Make a [virtual environment](https://docs.python.org/3/library/venv.html)
 1. Install all the dependencies
-    ```commandline
-        pip install -r requirements.txt
-    ```
+
+   ```commandline
+       pip install -r requirements.txt
+   ```
 
 2. Run the bot
-    ```commandline
-        python Bot.py
-    ```
+   ```commandline
+       python Bot.py
+   ```
 
 ## Sponsor
+
 Plexy is free and will always be free to use. I did spend a lot of time on creating it.  
-So any donations are welcome but of course not required. 	(˵ ͡° ͜ʖ ͡°˵)  
+So any donations are welcome but of course not required. (˵ ͡° ͜ʖ ͡°˵)
 
 [![Sponsor Link](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/gamingismyfood)
 
+## Future plans
+
+- I have some plans to document the code better
+- Also planning to change the bot to discord slash commands
+- Find a different way to get media assets without plex token
+
+## Issues/Bugs
+
+if you find any issues please create a new issue with logs and details what went wrong.
+
 ## Contributing
+
 Contributions are always welcome!
 
 ## License
