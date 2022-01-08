@@ -32,8 +32,7 @@ class NewContent:
             url = f"https://app.plex.tv/desktop/#!/search?query={urllib.parse.quote(content.title)}"
         else:
             url = f"{self.settings.secrets.contentUrl}details?key={content.key}&context=library%3Acontent.library"
-
-        print([content.type, content.library, content.key, content.season_episode, content.title, content.thumbnail, url])
+            
         cursor_obj = self.db_con.cursor()
         cursor_obj.execute(
             'INSERT INTO Content(type, library, key, season_episode, title, image, content_link) VALUES(?, ?, ?, ?, ?, ?, ?)',
