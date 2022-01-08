@@ -1,3 +1,4 @@
+from typing import List
 from discord.ext import commands
 from Commands.Info.info import NotiEmbed
 from Commands.plex import PlexConnection, Content, ContentEmbed
@@ -37,15 +38,15 @@ class utils(commands.Cog):
         if query is not None:
             return libraries_to_search, amount, query
         else:
-            return [], 0, ''
+            return libraries_to_search, amount, ''
 
     @staticmethod
-    def random_embed(plex_con: PlexConnection, library: str, amount: int, _) -> list[ContentEmbed]:
+    def random_embed(plex_con: PlexConnection, libraries: List[str], amount: int) -> list[ContentEmbed]:
         amount = max(1, min(amount, settings.command_config.settings.max_random_amount))
 
         random_content_embeds = list()
         for _ in range(amount):
-            all_in_library = plex_con.get_all_in_library(random.choice(library))
+            all_in_library = plex_con.get_all_in_library(random.choice(libraries))
             random_content = random.choice(all_in_library)
             random_content_object = Content(plex_con, random_content)
             random_content_embeds.append(ContentEmbed(random_content_object))
@@ -117,7 +118,8 @@ class utils(commands.Cog):
                 await self.send_error_message(ctx, e)
                 return
 
-            random_embeds = self.random_embed(plex_con, *arg_libs)
+            print(arg_libs)
+            random_embeds = self.random_embed(plex_con, libraries=arg_libs[0], amount=arg_libs[1])
             for embed in random_embeds:
                 if hasattr(embed, "get_pages"):
                     embed_list = embed.get_pages()
