@@ -1,5 +1,4 @@
-from discord.embeds import Embed
-from Commands.plex import PlexConnection, Content
+from Commands.plex import PlexConnection
 from Commands.settings import Settings
 from Commands.logger import main_logger
 import sqlite3
@@ -30,9 +29,11 @@ class NewContent:
 
     def _insert_content(self, content: EmbedContent):
         if self.settings.general_config.safe_mode:
-            url = "https://www.plex.tv/"
+            url = f"https://app.plex.tv/desktop/#!/search?query={urllib.parse.quote(content.title)}"
         else:
             url = f"{self.settings.secrets.contentUrl}details?key={content.key}&context=library%3Acontent.library"
+
+        print([content.type, content.library, content.key, content.season_episode, content.title, content.thumbnail, url])
         cursor_obj = self.db_con.cursor()
         cursor_obj.execute(
             'INSERT INTO Content(type, library, key, season_episode, title, image, content_link) VALUES(?, ?, ?, ?, ?, ?, ?)',
@@ -49,7 +50,7 @@ class NewContent:
             if lib_type == "movie":
                 for content in self.plex_con.library.section(lib).recentlyAdded(maxresults=self.settings.plex_config.max_recently_added):
                     if self.settings.general_config.safe_mode:
-                        thumburl = Embed.Empty
+                        thumburl = ""
                     else:
                         thumburl = str(content.thumbUrl)
 
@@ -67,7 +68,7 @@ class NewContent:
             elif lib_type == "show":
                 for content in self.plex_con.library.section(lib).recentlyAddedEpisodes(maxresults=self.settings.plex_config.max_recently_added):
                     if self.settings.general_config.safe_mode:
-                        thumburl = Embed.Empty
+                        thumburl = ""
                     else:
                         thumburl = f"{self.settings.secrets.plexBaseUrl}{content.grandparentThumb}?X-Plex-Token={self.settings.secrets.plexToken}"
 
@@ -144,4 +145,3 @@ class NewContent:
             for embed in self._get_content_embeds()[:30]:
                 main_logger.info(f'Send new content embed: {embed.description}')
                 await channel.send(embed=embed)
-

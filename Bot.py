@@ -46,6 +46,7 @@ async def check_for_new_content():
         is_life = True
     except Exception as e:
         main_logger.error('Failed scan loop')
+        raise e
         if is_life:
             await client\
                 .get_channel(settings.secrets.notificationsChannelId)\
