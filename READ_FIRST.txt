@@ -1,0 +1,51 @@
+How to use plexy:
+
+Requirements:
+ 1. Python 3.6 or Higher (3.9 recommended)
+ 2. Plex admin account
+ 3. Discord account
+
+Steps:
+
+1. Make a bot account in the discord developer portal.
+
+2. Make sure you have python installed and pip is working.
+
+3. Open "secrets.example.json" and fill in every field (for more info look at git repo).
+
+4. Save and rename "secrets.example.json" to "secrets.json".
+
+5. Open "config.example.json" and change "scanLibraries", "allLibraries", "args" to your Plex library names.
+
+6. *IMPORTANT* "safe_mode" if "true" Plexy uses the plex token to get media assets from the plex server.
+    But that exposes the plex token you have set to everybody in the discord server/channel.
+
+7. Change any other settings you want and Save and rename "config.example.json" to "config.json".
+
+8. (OPTIONAL) make a virtual enviorment
+
+8.1 Use `pip install -r requirements.txt` to install all dependencies
+
+9. Use `python Bot.py` to run the bot
+
+
+
+
+
+
+
+
+
+Copyright 2021 Cecilio Silva Monteiro
+
+Licensed under the GNU General Public License v3.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+https://www.gnu.org/licenses/gpl-3.0-standalone.html
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
