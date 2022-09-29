@@ -61,7 +61,6 @@ class PlexConnection(PlexServer):
 
 
 class Content:
-
     def __init__(self, plex_connection: PlexConnection, content, send: bool = False) -> None:
         self.content = content
         self.plex_connection = plex_connection

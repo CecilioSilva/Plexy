@@ -32,13 +32,14 @@ class NewContent:
             url = f"https://app.plex.tv/desktop/#!/search?query={urllib.parse.quote(content.title)}"
         else:
             url = f"{self.settings.secrets.contentUrl}details?key={content.key}&context=library%3Acontent.library"
-            
+
         cursor_obj = self.db_con.cursor()
         cursor_obj.execute(
             'INSERT INTO Content(type, library, key, season_episode, title, image, content_link) VALUES(?, ?, ?, ?, ?, ?, ?)',
             [content.type, content.library, content.key, content.season_episode, content.title, content.thumbnail, url])
         self.db_con.commit()
-        main_logger.debug(f"Added content {content.title} - {content.season_episode} to database")
+        main_logger.debug(
+            f"Added content {content.title} - {content.season_episode} to database")
 
     def _recently_added(self):
         recently_added_movies: list[EmbedContent] = list()
@@ -90,7 +91,8 @@ class NewContent:
     def _create_db_table(self):
         try:
             db_cursor = self.db_con.cursor()
-            db_cursor.execute("CREATE TABLE content(id INTEGER PRIMARY KEY, type VARCHAR, library VARCHAR, key VARCHAR, season_episode VARCHAR, title VARCHAR, image VARCHAR, content_link VARCHAR)")
+            db_cursor.execute(
+                "CREATE TABLE content(id INTEGER PRIMARY KEY, type VARCHAR, library VARCHAR, key VARCHAR, season_episode VARCHAR, title VARCHAR, image VARCHAR, content_link VARCHAR)")
             self.db_con.commit()
         except sqlite3.OperationalError:
             main_logger.debug('Database exists')
@@ -112,7 +114,8 @@ class NewContent:
         return new_content
 
     def _create_embed(self, content: EmbedContent):
-        embed = discord.Embed(color=self.settings.style_config.newContentEmbedColor)
+        embed = discord.Embed(
+            color=self.settings.style_config.newContentEmbedColor)
         embed.title = f"Newly added {content.library}:"
         embed.description = content.title
 
@@ -120,11 +123,14 @@ class NewContent:
             embed.url = f"https://app.plex.tv/desktop/#!/search?query={urllib.parse.quote(content.title)}"
         else:
             embed.url = f"{self.settings.secrets.contentUrl}details?key={content.key}&context=library%3Acontent.library"
-            embed.set_image(url=content.thumbnail if content.thumbnail else self.settings.style_config.defaultThumbLink)
+            embed.set_image(
+                url=content.thumbnail if content.thumbnail else self.settings.style_config.defaultThumbLink)
 
         if content.type == "episode":
-            embed.add_field(name="Episode", value=content.season_episode.split("e")[1], inline=False)
-            embed.set_footer(text=content.season_episode.upper().replace("S", f"{content.library} - Season: ").replace("E", " - Episode: ", 1))
+            embed.add_field(name="Episode", value=content.season_episode.split("e")[
+                            1], inline=False)
+            embed.set_footer(text=content.season_episode.upper().replace(
+                "S", f"{content.library} - Season: ").replace("E", " - Episode: ", 1))
 
         elif content.type == "movie":
             embed.add_field(name="Type", value="Movie", inline=False)
@@ -139,8 +145,14 @@ class NewContent:
         return embed_list
 
     async def send(self, client):
-        channel = client.get_channel(self.settings.secrets.notificationsChannelId)
+        channel = client.get_channel(
+            self.settings.secrets.notificationsChannelId)
         if not self.first_scan:
             for embed in self._get_content_embeds()[:30]:
-                main_logger.info(f'Send new content embed: {embed.description}')
-                await channel.send(embed=embed)
+                try:
+                    await channel.send(embed=embed)
+                    main_logger.info(
+                        f'Send new content embed: {embed.description}')
+                except discord.errors.HTTPException as e:
+                    main_logger.error(
+                        f"Error sending new content embed: {embed.description}")
